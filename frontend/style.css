@@ -1,5 +1,28 @@
 .App {
     text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    color: white;
+    padding: 20px;
+  }
+  
+  main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  footer {
+    background-color: #282c34;
+    color: white;
+    padding: 10px;
+    text-align: center;
   }
   
   input[type="file"] {
