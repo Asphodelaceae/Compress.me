@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import subprocess
 import os
-from .forms import UploadFileForm
+from django.forms import UploadFileForm
 
 def upload_file(request):
     if request.method == 'POST':
@@ -28,7 +28,7 @@ def upload_file(request):
 
             # Step 1: Generate Key Pair
             # TODO: put args for keygen in the rest of the array below
-            keygen_result = subprocess.run(['../../../encryption/binaries/keygen', "???"], capture_output=True, text=True)
+            keygen_result = subprocess.run(['/usr/local/bin/keygen', "???"], capture_output=True, text=True)
             if keygen_result.returncode != 0:
                 return JsonResponse({'error': 'Key generation failed'}, status=500)
 
@@ -40,7 +40,7 @@ def upload_file(request):
             # Step 2: Encrypt the File
             # TODO: Add args for encrypting the file
             encrypted_file_path = f'{file_path}.txt'
-            encrypt_result = subprocess.run(['../../../encryption/binaries/encrypt', '???'], capture_output=True, text=True)
+            encrypt_result = subprocess.run(['/usr/local/bin/encrypt', '???'], capture_output=True, text=True)
             if encrypt_result.returncode != 0:
                 return JsonResponse({'error': 'File encryption failed'}, status=500)
 
@@ -51,6 +51,7 @@ def upload_file(request):
                 # Concatenate encrypted file
                 with open(encrypted_file_path, 'rb') as encrypted_file:
                     intermediary_file.write(encrypted_file.read())
+                intermediary_file.write(b'--END--ENCRYPTED--FILE--\n')
                 # Concatenate private key
                 with open(private_key_path, 'rb') as private_key_file:
                     intermediary_file.write(private_key_file.read())
@@ -58,7 +59,7 @@ def upload_file(request):
             # TODO: figure out args for to encode the cat'd file above. Will need to pass its path to the encode binary
             # Step 4: Compress the Intermediary File
             final_output_path = f'{file_path}.txt'
-            huffman_result = subprocess.run(['../../../compression/binaries/encode', '???'], capture_output=True, text=True)
+            huffman_result = subprocess.run(['/usr/local/bin/encode', '???'], capture_output=True, text=True)
             if huffman_result.returncode != 0:
                 return JsonResponse({'error': 'Huffman encoding failed'}, status=500)
 
