@@ -1,37 +1,148 @@
-.App {
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General Styles for Body and HTML */
+body, html {
+    font-family: 'Roboto', sans-serif;
+    background: #f4f4f9;
+    color: #333;
     text-align: center;
     min-height: 100vh;
+    line-height: 1.6;
     display: flex;
     flex-direction: column;
-  }
-  
-  .App-header {
-    background-color: #282c34;
+}
+
+/* Navigation Styling */
+nav {
+    background: #6200ee;
     color: white;
-    padding: 20px;
-  }
-  
-  main {
-    flex: 1;
+    width: 100%;
+    padding: 10px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+nav ul {
+    list-style: none;
     display: flex;
     justify-content: center;
-    align-items: center;
-  }
-  
-  footer {
-    background-color: #282c34;
+}
+
+nav ul li {
+    padding: 0 20px;
+}
+
+nav ul li a {
     color: white;
-    padding: 10px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Header Styling */
+header {
+    background: linear-gradient(135deg, #6200ee, #a855f7);
+    color: white;
+    padding: 40px 20px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Title Styling */
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    width: 100%;
+}
+
+/* Main Content Area Styling */
+main {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Features Section Styling */
+.feature-section {
+    width: 80%;
+    max-width: 960px;
+    background: #fff;
+    padding: 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center; /* Center-align the text and contents */
+}
+
+.features {
+    display: flex;
+    flex-direction: column; /* Stack features vertically */
+    align-items: center; /* Center features vertically */
+    width: 100%; /* Full width to utilize the available space */
+}
+
+.feature {
+    padding: 20px;
+    margin: 10px;
+    width: 100%; /* Full width to create a block-like appearance */
+    max-width: 300px; /* Maximum width for each feature box */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 8px;
+}
+
+/* Pyramid Layout Adjustments */
+.features {
+    display: flex;
+    flex-direction: row; /* Horizontal stacking */
+    flex-wrap: wrap; /* Enable wrapping */
+    justify-content: center; /* Center the items horizontally */
+}
+
+.feature {
+    flex: 1 1 100%; /* Make the first feature take the full width */
+    margin: 10px 20px; /* Adjust margins for visual separation */
+}
+
+.feature:nth-child(2), .feature:nth-child(3) {
+    flex: 1 1 45%; /* Adjust the size for the two bottom features */
+}
+
+@media (max-width: 768px) {
+    .feature {
+        flex: 1 1 100%; /* Stack vertically on smaller screens */
+        margin: 10px 0; /* Vertical margin only */
+    }
+}
+
+
+
+@media (max-width: 768px) {
+    .feature-section {
+        padding: 20px; /* Slightly reduce padding on smaller devices */
+    }
+
+    .feature {
+        padding: 15px; /* Adjust padding for a cleaner look on mobile devices */
+    }
+}
+
+
+/* Footer Styling */
+footer {
+    background-color: #6200ee;
+    color: white;
+    padding: 20px;
+    width: 100%;
     text-align: center;
-  }
-  
-  input[type="file"] {
-    margin: 20px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
+    box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
+}

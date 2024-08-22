@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function FileUpload() {
+function Uploads() {
   const [files, setFiles] = useState([]);
 
   const handleFileChange = (event) => {
@@ -14,8 +14,9 @@ function FileUpload() {
       formData.append('files[]', file);
     }
 
+    // Assuming you have an endpoint in your backend to handle the uploads
     try {
-      const response = await fetch('/upload', {
+      const response = await fetch('/api/upload', {  // Adjust the API URL based on your backend setup
         method: 'POST',
         body: formData,
       });
@@ -36,4 +37,4 @@ function FileUpload() {
   );
 }
 
-export default FileUpload;
+export default Uploads;

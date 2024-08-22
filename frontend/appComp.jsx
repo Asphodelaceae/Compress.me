@@ -1,21 +1,22 @@
+// Inside your appComp.jsx or a similar file
 import React from 'react';
-import FileUpload from './FileUpload';
-import './App.css';  // Custom styles
+import './style.css'; // Make sure the path is correct based on your project structure
 
-function App() {
+function AppComp() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>File Upload Service</h1>
+      <header>
+        <h1>Welcome to Compress.me!</h1>
       </header>
       <main>
-        <FileUpload />
+        <button onClick={() => alert("Button clicked!")}>Click me!</button>
+        <button onClick={() => alert("Another action!")}>Another Button</button>
       </main>
       <footer>
-        <p>© 2024 Your Company</p>
+        <p>© 2024 Compress.me - All rights reserved</p>
       </footer>
     </div>
   );
 }
 
-export default App;
+export default AppComp;

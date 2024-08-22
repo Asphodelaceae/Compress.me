@@ -3,14 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Uploader</title>
-    <link href="%PUBLIC_URL%/favicon.ico" rel="icon">
-    <link href="%PUBLIC_URL%/manifest.json" rel="manifest">
-    <link rel="stylesheet" href="%PUBLIC_URL%/css/style.css">  <!-- Assuming you have some custom styles -->
+    <title>Compress.me</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!-- Scripts are added automatically by Create React App -->
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <header id="home">
+        <h1>Welcome to Compress.me!</h1>
+        <p>Your one-stop solution for file compression and encryption.</p>
+    </header>
+    <main>
+        <button class="upload-button">Upload Files</button> <!-- Upload Button Above the Feature Section -->
+        <section id="features" class="feature-section">
+            <h2>Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>User-Friendly</h3>
+                    <p>Enjoy our easy-to-use interface, accessible to everyone.</p>
+                </div>
+                <div class="feature">
+                    <h3>Secure Encryption</h3>
+                    <p>Ensure your data's safety with military-grade encryption.</p>
+                </div>
+                <div class="feature">
+                    <h3>Fast Compression</h3>
+                    <p>Compress your files quickly and efficiently with our advanced algorithms.</p>
+                </div>
+            </div>
+        </section>
+    </main>  
+    <footer>
+        <p>© 2024 Compress.me - All rights reserved</p>
+    </footer>
 </body>
 </html>
