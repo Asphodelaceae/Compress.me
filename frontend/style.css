@@ -146,3 +146,44 @@ footer {
     text-align: center;
     box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
 }
+/* Button Container Styling */
+.button-container {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 20px; /* Space between buttons */
+    margin: 20px auto 30px; /* Vertical spacing, and auto for horizontal centering */
+    width: 100%; /* Ensures container takes full available width */
+    max-width: 640px; /* Limit the maximum width for better layout control */
+}
+
+/* Upload Button Styling */
+.upload-button {
+    background-color: #4caf50; /* Vibrant green for visibility */
+    color: white;
+    border: none;
+    padding: 20px 40px; /* Same padding for height and width */
+    font-size: 20px; /* Font size to maintain readability */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Shadow for depth */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    flex: 1; /* Allows buttons to expand and fill the container space equally */
+}
+
+.upload-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Responsive Adjustment for Smaller Devices */
+@media (max-width: 768px) {
+    .button-container {
+        flex-direction: column; /* Stack buttons vertically on smaller screens */
+        gap: 10px; /* Reduce gap for vertical stacking */
+    }
+
+    .upload-button {
+        width: 80%; /* Adjust button width for smaller screens */
+        margin: 0 auto; /* Center buttons horizontally */
+    }
+}
