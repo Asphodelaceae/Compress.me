@@ -27,29 +27,32 @@ def upload_file(request):
             '''
 
             # Step 1: Generate Key Pair
-            # TODO: put args for keygen in the rest of the array below
-            keygen_result = subprocess.run(['/usr/local/bin/keygen', "???"], capture_output=True, text=True)
+            keygen_result = subprocess.run(['/usr/local/bin/keygen'], capture_output=True, text=True)
             if keygen_result.returncode != 0:
                 return JsonResponse({'error': 'Key generation failed'}, status=500)
 
             # Assuming keygen outputs two files: public.key and private.key
             # TODO: figure out where the pub and priv keys will actually go so we can find and pull them. 
-            public_key_path = 'public.key'
-            private_key_path = 'private.key'
+            public_key_path = 'rsa.pub'
+            private_key_path = 'rsa.priv'
 
             # Step 2: Encrypt the File
             # TODO: Add args for encrypting the file
-            encrypted_file_path = f'{file_path}.txt'
-            encrypt_result = subprocess.run(['/usr/local/bin/encrypt', '???'], capture_output=True, text=True)
+            encrypt_in = f'{file_path}'
+            encrypt_out = 'encrypted.txt'
+            encrypt_args = ['/usr/local/bin/encrypt', 
+                            '-i', encrypt_in,
+                            '-o', encrypt_out]
+            encrypt_result = subprocess.run(encrypt_args, capture_output=True, text=True)
             if encrypt_result.returncode != 0:
                 return JsonResponse({'error': 'File encryption failed'}, status=500)
 
             # Step 3: Concatenate Encrypted File and Private Key
             # TODO: make sure that this cats the files correctly and in a way that can be de-concat'd later
-            intermediary_file_path = f'{file_path}.txt'
+            intermediary_file_path = 'intermediary.txt'
             with open(intermediary_file_path, 'wb') as intermediary_file:
                 # Concatenate encrypted file
-                with open(encrypted_file_path, 'rb') as encrypted_file:
+                with open(encrypt_out, 'rb') as encrypted_file:
                     intermediary_file.write(encrypted_file.read())
                 intermediary_file.write(b'--END--ENCRYPTED--FILE--\n')
                 # Concatenate private key
