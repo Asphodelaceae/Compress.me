@@ -3,12 +3,14 @@ from django.http import JsonResponse
 import subprocess
 import os
 from .forms import UploadFileForm
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def upload_file_encrypt(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-
         if not form.is_valid():
+            print('Invalid form: ', form.errors)
             return JsonResponse({'error': 'Invalid request'}, status=400)
         
         file = request.FILES['file']
@@ -30,7 +32,7 @@ def upload_file_encrypt(request):
         '''
 
         # Step 1: Generate Key Pair
-        keygen_result = subprocess.run(['/usr/local/bin/keygen'], capture_output=True, text=True)
+        keygen_result = subprocess.run(['/usr/bin/keygen'], capture_output=True, text=True)
         if keygen_result.returncode != 0:
             return JsonResponse({'error': 'Key generation failed'}, status=500)
 
@@ -38,7 +40,7 @@ def upload_file_encrypt(request):
         # TODO: figure out where the pub and priv keys will actually go so we can find and pull them. 
         # Step 2: Encrypt the File
         # TODO: Add args for encrypting the file
-        encrypt_args = ['/usr/local/bin/encrypt', 
+        encrypt_args = ['/usr/bin/encrypt', 
                         '-i', file_path,
                         '-o', encrypted_file_out_path]
         encrypt_result = subprocess.run(encrypt_args, capture_output=True, text=True)
@@ -58,7 +60,7 @@ def upload_file_encrypt(request):
 
         # TODO: figure out args for to encode the cat'd file above. Will need to pass its path to the encode binary
         # Step 4: Compress the Intermediary File
-        huffman_args = ['/usr/local/bin/encode',
+        huffman_args = ['/usr/bin/encode',
                         '-i', intermediary_file_path,
                         '-o', final_output_path]
         huffman_result = subprocess.run(huffman_args, capture_output=True, text=True)
@@ -67,3 +69,70 @@ def upload_file_encrypt(request):
 
         # Return the path to the final output file
         return JsonResponse({'result': final_output_path})
+
+
+@csrf_exempt
+def upload_file_decrypt(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if not form.is_valid():
+            print('Invalid form: ', form.errors)
+            return JsonResponse({'error': 'Invalid request'}, status=400)
+        
+        # Step 1: Handle the uploaded file
+        file = request.FILES['file']
+        upload_dir = 'media'
+        if not os.path.exists(upload_dir):
+            os.makedirs(upload_dir)
+        
+        # Define file paths
+        file_path = os.path.join(upload_dir, file.name)
+        intermediary_file_path = f'{file_path}_cat.txt'  # Output of decompression
+        encoded_file_path = f'{file_path}_encoded.txt'  # Input file for decoding
+        decrypted_file_path = f'{file_path}_decrypted.txt'  # Final output after decryption
+        private_key_path = f'{file_path}_private_key.txt'  # Extracted private key
+
+        # Save the uploaded file (encoded Huffman file)
+        with open(encoded_file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        # Step 2: Decode the Encoded File
+        decode_args = ['/usr/bin/decode', 
+                       '-i', encoded_file_path,
+                       '-o', intermediary_file_path]
+        decode_result = subprocess.run(decode_args, capture_output=True, text=True)
+        if decode_result.returncode != 0:
+            return JsonResponse({'error': 'Huffman decoding failed'}, status=500)
+
+        # Step 3: De-concatenate Encrypted File and Private Key
+        # Read the intermediary file and split based on the delimiter
+        try:
+            with open(intermediary_file_path, 'rb') as f:
+                content = f.read()
+                encrypted_content, private_key_content = content.split(b'--END--ENCRYPTED--FILE--\n', 1)
+
+            # Write the encrypted content to a file
+            with open(f'{file_path}_encrypted.txt', 'wb') as encrypted_file:
+                encrypted_file.write(encrypted_content)
+            
+            # Write the private key content to a file
+            with open(private_key_path, 'wb') as private_key_file:
+                private_key_file.write(private_key_content)
+        except Exception as e:
+            print('De-concatenation failed: ', e)
+            return JsonResponse({'error': 'De-concatenation failed'}, status=500)
+
+        # Step 4: Decrypt the File using the extracted private key
+        decrypt_args = ['/usr/bin/decrypt', 
+                        '-k', private_key_path, 
+                        '-i', f'{file_path}_encrypted.txt',
+                        '-o', decrypted_file_path]
+        decrypt_result = subprocess.run(decrypt_args, capture_output=True, text=True)
+        if decrypt_result.returncode != 0:
+            return JsonResponse({'error': 'File decryption failed'}, status=500)
+
+        # Return the path to the decrypted file
+        return JsonResponse({'result': decrypted_file_path})
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

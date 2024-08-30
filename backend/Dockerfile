@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     libpq-dev \
+    clang \
+    pkg-config \
+    libgmp3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies for the Django project
@@ -15,8 +18,19 @@ COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
 
 
-COPY ./c_scripts/encryption/binaries /usr/bin/
-COPY ./c_scripts/compression/binaries /usr/bin/
+COPY ./c_scripts/encryption/src /usr/bin/encryption/src
+COPY ./c_scripts/compression/src /usr/bin/compression/src
+
+WORKDIR /usr/bin/encryption/src
+RUN make
+RUN mv keygen /usr/bin
+RUN mv encrypt /usr/bin
+RUN mv decrypt /usr/bin
+
+WORKDIR /usr/bin/compression/src
+RUN make
+RUN mv encode /usr/bin
+RUN mv decode /usr/bin
 
 # Step 3: Set up the Django project
 WORKDIR /usr/src/app
