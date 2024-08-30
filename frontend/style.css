@@ -137,7 +137,18 @@ main {
 }
 
 
-/* Footer Styling */
+html {
+    height: 100%; /* Ensures that the html element takes full viewport height */
+}
+
+body {
+    min-height: 100vh; /* Ensures that the body is at least the height of the viewport */
+    display: flex;
+    flex-direction: column; /* Stacks children elements vertically */
+    justify-content: space-between; /* Distributes space between header/content and footer */
+    margin: 0; /* Resets any default margin */
+}
+
 footer {
     background-color: #6200ee;
     color: white;
@@ -146,6 +157,7 @@ footer {
     text-align: center;
     box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
 }
+
 /* Button Container Styling */
 .button-container {
     display: flex;

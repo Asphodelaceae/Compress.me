@@ -13,7 +13,7 @@ function AppComp() {
         <button onClick={() => alert("Another action!")}>Another Button</button>
       </main>
       <footer>
-        <p>© 2024 Compress.me - All rights reserved</p>
+        <p>Â© 2024 Compress.me - All rights reserved</p>
       </footer>
     </div>
   );

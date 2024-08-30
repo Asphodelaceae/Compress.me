@@ -6,45 +6,85 @@
     <title>Compress.me</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- React and ReactDOM (Development Version) -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- Babel is included to allow JSX syntax in script -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
     <header id="home">
         <h1>Welcome to Compress.me!</h1>
         <p>Your one-stop solution for file compression and encryption.</p>
     </header>
-    <main>
-        <div class="button-container"> <!-- Container for buttons to align them side by side -->
-            <button class="upload-button">Compress</button> <!-- Compress Button -->
-            <button class="upload-button">Decompress</button> <!-- Decompress Button -->
-        </div>
-        <section id="features" class="feature-section">
-            <h2>Features</h2>
-            <div class="features">
-                <div class="feature">
-                    <h3>User-Friendly</h3>
-                    <p>Enjoy our easy-to-use interface, accessible to everyone.</p>
-                </div>
-                <div class="feature">
-                    <h3>Secure Encryption</h3>
-                    <p>Ensure your data's safety with military-grade encryption.</p>
-                </div>
-                <div class="feature">
-                    <h3>Fast Compression</h3>
-                    <p>Compress your files quickly and efficiently with our advanced algorithms.</p>
-                </div>
-            </div>
-        </section>
-    </main>  
-     
+
+    <div id="root"></div> <!-- React will attach to this div -->
+
+    <script type="text/babel">
+        // React Component
+        function App() {
+            const handleFileUpload = (action) => {
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        // Create FormData and append the file
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        // Determine the appropriate URL based on action
+                        const url = action === 'compress' ? '/compress' : '/decompress';
+
+                        // Send the file to the server using fetch API
+                        fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                        })
+                        .then(response => response.text())
+                        .then(result => {
+                            alert('File processing complete.');
+                            console.log(result);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+                };
+                fileInput.click();
+            };
+
+            return (
+                <main>
+                    <div className="button-container">
+                        <button className="upload-button" onClick={() => handleFileUpload('compress')}>Compress</button>
+                        <button className="upload-button" onClick={() => handleFileUpload('decompress')}>Decompress</button>
+                    </div>
+                    <section id="features" className="feature-section">
+                        <h2>Features</h2>
+                        <div className="features">
+                            <div className="feature">
+                                <h3>User-Friendly</h3>
+                                <p>Enjoy our easy-to-use interface, accessible to everyone.</p>
+                            </div>
+                            <div className="feature">
+                                <h3>Secure Encryption</h3>
+                                <p>Ensure your data's safety with military-grade encryption.</p>
+                            </div>
+                            <div className="feature">
+                                <h3>Fast Compression</h3>
+                                <p>Compress your files quickly and efficiently with our advanced algorithms.</p>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            );
+        }
+        // Render React Component
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
     <footer>
-        <p>© 2024 Compress.me - All rights reserved</p>
+        <p>Â© 2024 Compress.me - All rights reserved</p>
     </footer>
 </body>
 </html>
