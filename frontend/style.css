@@ -199,3 +199,34 @@ footer {
         margin: 0 auto; /* Center buttons horizontally */
     }
 }
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.feature {
+    cursor: pointer;
+    padding: 20px;
+    margin: 10px;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+.feature.expanded {
+    max-width: 600px; 
+    background-color: #f0f0f0; 
+    padding: 30px; 
+}
+
+.detailed-content {
+    margin-top: 10px;  
+    font-size: 0.9em;  
+}
+
+
