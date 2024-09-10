@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './App.css'; // Make sure the CSS is linked correctly
 
 function App() {
+  const [expanded, setExpanded] = useState(null);
+
+  const toggleExpand = (featureId) => {
+    setExpanded(expanded === featureId ? null : featureId);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <>
+      <header id="home">
+        <h1>Welcome to Compress.me!</h1>
+        <p>Your one-stop solution for file compression and encryption.</p>
       </header>
-    </div>
+      <main>
+        <div className="button-container">
+          <button className="upload-button" onClick={() => alert('Compress functionality here')}>Compress</button>
+          <button className="upload-button" onClick={() => alert('Decompress functionality here')}>Decompress</button>
+        </div>
+        <section id="features" className="feature-section">
+          <h2>Features</h2>
+          <div className="features">
+            {['userFriendly', 'secureEncryption', 'fastCompression'].map(feature => (
+              <div key={feature} className={`feature ${expanded === feature ? 'expanded' : ''}`} onClick={() => toggleExpand(feature)}>
+                <h3>{feature}</h3>
+                <p>{`Details about ${feature}. Click to expand for more info.`}</p>
+                {expanded === feature && <div className="detailed-content">More details about {feature}...</div>}
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+      <footer>
+        <p>© 2024 Compress.me - All rights reserved</p>
+      </footer>
+    </>
   );
 }
 
