@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import './App.css'; // Make sure the CSS is linked correctly
+import './App.css';
+import UploadForm from './UploadForm.tsx';
 
 function App() {
   const [expanded, setExpanded] = useState(null);
+  const [showUploadForm, setShowUploadForm] = useState(false);  // State to toggle the UploadForm visibility
 
   const toggleExpand = (featureId) => {
     setExpanded(expanded === featureId ? null : featureId);
@@ -16,9 +18,12 @@ function App() {
       </header>
       <main>
         <div className="button-container">
-          <button className="upload-button" onClick={() => alert('Compress functionality here')}>Compress</button>
+          <button className="upload-button" onClick={() => setShowUploadForm(true)}>Compress</button>
           <button className="upload-button" onClick={() => alert('Decompress functionality here')}>Decompress</button>
         </div>
+        {showUploadForm && (
+          <UploadForm />
+        )}
         <section id="features" className="feature-section">
           <h2>Features</h2>
           <div className="features">
