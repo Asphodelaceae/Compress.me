@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-//need endpoint import here
-import urlpatterns from './Compress.me/backend/compressme/upload/urls.py'
 
 interface UploadFormProps {
   action: 'compress' | 'decompress'; // Prop to specify the action
@@ -24,7 +22,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ action }) => {
       formData.append('file', file);
 
       // API endpoint changes based on the action
-      const url = action === 'compress' ? urlpatterns[0] : urlpatterns[1];
+      const url = action === 'compress' ? 'http://compress.me/upload/encrypt' : 'http://compress.me/upload/decrypt';
 
       try {
         const response = await axios.post(url, formData);
