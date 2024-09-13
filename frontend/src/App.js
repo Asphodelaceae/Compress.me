@@ -4,10 +4,14 @@ import UploadForm from './UploadForm.tsx';
 
 function App() {
   const [expanded, setExpanded] = useState(null);
-  const [showUploadForm, setShowUploadForm] = useState(false);  // State to toggle the UploadForm visibility
+  const [uploadAction, setUploadAction] = useState('');
 
   const toggleExpand = (featureId) => {
     setExpanded(expanded === featureId ? null : featureId);
+  };
+
+  const handleUploadAction = (action) => {
+    setUploadAction(action);
   };
 
   return (
@@ -18,11 +22,11 @@ function App() {
       </header>
       <main>
         <div className="button-container">
-          <button className="upload-button" onClick={() => setShowUploadForm(true)}>Compress</button>
-          <button className="upload-button" onClick={() => alert('Decompress functionality here')}>Decompress</button>
+          <button className="upload-button" onClick={() => handleUploadAction('compress')}>Compress</button>
+          <button className="upload-button" onClick={() => handleUploadAction('decompress')}>Decompress</button>
         </div>
-        {showUploadForm && (
-          <UploadForm />
+        {uploadAction && (
+          <UploadForm action={uploadAction} />
         )}
         <section id="features" className="feature-section">
           <h2>Features</h2>

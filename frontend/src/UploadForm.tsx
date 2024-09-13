@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+//need endpoint import here
+import urlpatterns from './Compress.me/backend/compressme/upload/urls.py'
 
-const UploadForm: React.FC = () => {
+interface UploadFormProps {
+  action: 'compress' | 'decompress'; // Prop to specify the action
+}
+
+const UploadForm: React.FC<UploadFormProps> = ({ action }) => {
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<string | null>(null);
 
@@ -17,11 +23,14 @@ const UploadForm: React.FC = () => {
       const formData = new FormData();
       formData.append('file', file);
 
+      // API endpoint changes based on the action
+      const url = action === 'compress' ? urlpatterns[0] : urlpatterns[1];
+
       try {
-        const response = await axios.post('http://localhost:8000/upload/', formData);
+        const response = await axios.post(url, formData);
         setResult(response.data.result);
       } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error(`Error ${action}ing file:`, error);
       }
     }
   };
@@ -30,7 +39,7 @@ const UploadForm: React.FC = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <input type="file" onChange={handleFileChange} />
-        <button type="submit">Upload</button>
+        <button type="submit">{action === 'compress' ? 'Compress File' : 'Decompress File'}</button>
       </form>
       {result && <div>{result}</div>}
     </div>
